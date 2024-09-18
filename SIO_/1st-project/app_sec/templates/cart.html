@@ -1,0 +1,88 @@
+{% extends "for_all.html" %}
+{% block title %}Shopping Cart{% endblock %}
+
+{% block body %}
+<div class="row">
+        <h3 class="bold" style="font-size: xx-large; margin-left: 50px;">
+            <i class="glyphicon glyphicon-shopping-cart"></i> Your Shopping Cart
+        </h3>
+    <div style="display: flex; margin-left:50px">
+                {% for product in products %}
+                <div style="margin-right: 100px;">
+                    <div class="col-lg-4">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="thumbnail thumbnail-q">
+
+                                <a href="{{ url_for('product', product_id=product.id) }}">
+                                    <img width="200px" src="{{ url_for('static', filename=product.image) }}" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <h3 class="bold">{{ product['name'] }}</h3>
+                        <p>{{ product['price'] / 100 }}&euro;</p>
+                        <br />
+                    </div>
+                    <div >
+                        <p><span style="font-weight: bold; font-size:large;">Quantity:</span> {{ product['quantity'] }}</p>
+                    </div>
+                    <div class="col-lg-2">
+                        <p> 
+                            <strong>Total: </strong>{{ product['total'] / 100 }}&euro;
+                        </p>
+                    </div>
+
+                    <p>
+                        <a href="{{ url_for('remove_from_cart', index=product['index']) }}">
+                        <button type="button" class="btn btn-danger btn-xs">
+                            <i class="glyphicon glyphicon-trash">Remove from cart</i>
+                        </button></a>
+                    </p>
+                </div>
+                {% endfor %}
+    </div>
+
+    <div class="col-lg-4">
+        <h3 class="bold">
+            <i class="glyphicon glyphicon-th-list"></i> Cart Summary
+        </h3>
+
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                Current Cart Value
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <p>
+                        {{ quantity_total }} Items <strong class="pull-right">&dollar;{{ grand_total / 100 }}</strong>
+                    </p>
+                    <p>
+                        24hr Shipping <strong class="pull-right">&dollar;10</strong>
+                    </p>
+                </li>
+                <li class="list-group-item">
+                    <p>Total <strong class="pull-right">&dollar;{{ grand_total / 100 }}</strong></p>
+                </li>
+            </ul>
+            <div class="panel-footer">
+                {%if quantity_total>0%}
+                <a href="{{ url_for('checkout') }}" class="btn btn-primary btn-sm">
+                    Checkout <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+                {%else%}
+                <a href="checkout" class="btn btn-primary btn-sm">
+                    Checkout <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+                {%endif%}
+            </div>
+        </div>
+        <a href="{{ url_for('empty_cart')}}">
+            <button type="button" class="btn btn-primary btn-xs">Empty Cart
+                <i class="glyphicon glyphicon-remove"></i>
+            </button>
+        </a>
+    </div>
+</div>
+
+{% endblock %}
